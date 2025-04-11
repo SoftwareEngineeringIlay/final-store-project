@@ -1,0 +1,21 @@
+.product-header {
+    position: relative;
+}
+
+.back-button {
+    position: absolute; 
+    top: 20px; 
+    left: 20px; 
+    background-color: red; 
+    color: white; 
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer; 
+    border-radius: 8px; /* Rounded edges */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.back-button:hover {
+    background-color: darkred; 
+}

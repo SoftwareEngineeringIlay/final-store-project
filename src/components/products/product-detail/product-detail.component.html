@@ -1,0 +1,16 @@
+<header class="product-header">
+    <button (click)="goBack()" class="back-button">Back</button> <!-- Back button -->
+    <h1 class="product-title">{{ product.title }}</h1>
+</header>
+
+<section class="product-content">
+    <div class="product-box">
+        <h2 class="product-name">{{ product.title }}</h2>
+        <img [src]="product.imageUrl" alt="{{ product.title }}">
+    </div>
+    
+    <div class="product-box">
+        <h2>{{ product.featureTitle }}</h2>
+        <p class="feature-description">{{ product.featureDescription }}</p>
+    </div>
+</section>
