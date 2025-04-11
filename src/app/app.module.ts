@@ -4,19 +4,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { App } from './app.component';
 
 import { Home } from '../components/home/home.component';
-import { Electronics } from '../components/electronics/electronics.component';
+import { Items } from '../components/items/items.component';
 import { Product } from '../components/products/product/product.component';
 import { ProductDetail } from '../components/products/product-detail/product-detail.component';
-import { ItemsComponent } from '../components/items/items.component';
 
 @NgModule({
   declarations: [
     App,
-    Product,
     Home,
     Items,
-    ProductDetail,
-    ItemsComponent
+    Product,
+    ProductDetail
   ],
   imports: [
     BrowserModule,
@@ -25,5 +23,4 @@ import { ItemsComponent } from '../components/items/items.component';
   providers: [],
   bootstrap: [App]
 })
-
 export class AppModule { }

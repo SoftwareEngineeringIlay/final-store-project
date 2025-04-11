@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-interface Product {
+interface Item {
   id: string;
   title: string;
   price: number;
@@ -9,16 +9,16 @@ interface Product {
 }
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  selector: 'app-items',                  // ← matches how we'll use it in HTML
+  templateUrl: './items.component.html',
+  styleUrls: ['./items.component.css']
 })
-export class Products implements OnInit {
-  products: Product[] = [
-    { id: 'earbuds',     title: 'Wireless Earbuds', price: 10, imageUrl: 'assets/images/earbuds.png',     quantity: 0 },
-    { id: 'smartwatch',  title: 'Smartwatch',      price: 20, imageUrl: 'assets/images/smartwatch.png',  quantity: 0 },
-    { id: 'speaker',     title: 'Bluetooth Speaker', price: 30, imageUrl: 'assets/images/speaker.png',      quantity: 0 },
-    { id: 'tv',          title: 'TV',              price: 40, imageUrl: 'assets/images/tv.png',           quantity: 0 }
+export class Items implements OnInit {  // ← export class must match the name
+  products: Item[] = [
+    { id: 'earbuds',    title: 'Wireless Earbuds',  price: 10, imageUrl: 'assets/images/earbuds.png',   quantity: 0 },
+    { id: 'smartwatch', title: 'Smartwatch',        price: 20, imageUrl: 'assets/images/smartwatch.png',quantity: 0 },
+    { id: 'speaker',    title: 'Bluetooth Speaker', price: 30, imageUrl: 'assets/images/speaker.png',    quantity: 0 },
+    { id: 'tv',         title: 'TV',                price: 40, imageUrl: 'assets/images/tv.png',         quantity: 0 }
   ];
   total = 0;
 
@@ -28,8 +28,8 @@ export class Products implements OnInit {
 
   private loadCart() {
     fetch('http://localhost:3000/api/cart')
-      .then(res => res.json())
-      .then((cart: Record<string, number>) => {
+      .then(r => r.json())
+      .then((cart: Record<string,number>) => {
         this.products.forEach(p => p.quantity = cart[p.id] || 0);
         this.calculateTotal();
       });
@@ -38,12 +38,12 @@ export class Products implements OnInit {
   add(id: string) {
     fetch('http://localhost:3000/api/cart/add', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productId: id })
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({productId: id})
     })
-    .then(res => res.json())
+    .then(r => r.json())
     .then(data => {
-      const p = this.products.find(x => x.id === id)!;
+      const p = this.products.find(x=>x.id===id)!;
       p.quantity = data.quantity;
       this.calculateTotal();
     });
@@ -52,18 +52,18 @@ export class Products implements OnInit {
   remove(id: string) {
     fetch('http://localhost:3000/api/cart/remove', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productId: id })
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({productId: id})
     })
-    .then(res => res.json())
+    .then(r => r.json())
     .then(data => {
-      const p = this.products.find(x => x.id === id)!;
+      const p = this.products.find(x=>x.id===id)!;
       p.quantity = data.quantity;
       this.calculateTotal();
     });
   }
 
   private calculateTotal() {
-    this.total = this.products.reduce((sum, p) => sum + p.price * p.quantity, 0);
+    this.total = this.products.reduce((sum,p) => sum + p.price*p.quantity, 0);
   }
 }
