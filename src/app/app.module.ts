@@ -5,7 +5,6 @@ import { App } from './app.component';
 
 import { Home } from '../components/home/home.component';
 import { Electronics } from '../components/electronics/electronics.component';
-import { Sailing } from '../components/sailing/sailing.component';
 import { Product } from '../components/products/product/product.component';
 import { ProductDetail } from '../components/products/product-detail/product-detail.component';
 
@@ -15,7 +14,6 @@ import { ProductDetail } from '../components/products/product-detail/product-det
     Product,
     Home,
     Electronics,
-    Sailing,
     ProductDetail
   ],
   imports: [
