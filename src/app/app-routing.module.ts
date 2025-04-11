@@ -7,7 +7,7 @@ import { ProductDetail } from '../components/products/product-detail/product-det
 
 const routes: Routes = [
   { path: '', component: Home },
-  { path: 'electronics', component: Electronics },
+  { path: 'products', component: Items },
   { path: 'product/:id', component: ProductDetail },  // Use a single dynamic route
   { path: '**', redirectTo: '' }  // Fallback to home
 ];
