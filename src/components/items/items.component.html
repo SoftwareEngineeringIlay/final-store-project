@@ -1,0 +1,21 @@
+<header class="category-header">
+    <h1>Products</h1>
+  </header>
+  
+  <section class="category-content">
+    <app-product
+      *ngFor="let p of products"
+      [id]="p.id"
+      [title]="p.title"
+      [price]="p.price"
+      [imageUrl]="p.imageUrl"
+      [quantity]="p.quantity"
+      (add)="add($event)"
+      (remove)="remove($event)">
+    </app-product>
+  </section>
+  
+  <div class="sum">
+    <strong>Sum:</strong> {{ total }}₪
+  </div>
+  

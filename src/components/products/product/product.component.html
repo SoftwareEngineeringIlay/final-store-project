@@ -1,7 +1,11 @@
-<!-- creating product for better readability -->
 <div class="product-box">
     <h3>{{ title }}</h3>
-    <p>{{ description }}</p>
-    <img [src]="imageUrl" [alt]="title">
-    <a [routerLink]="productLink" class="details-button">More Details</a>
-</div>
+    <p>Price: {{ price }}₪</p>
+    <img [src]="imageUrl" [alt]="title" class="product-image">
+    <div class="controls">
+      <button (click)="remove.emit(id)" [disabled]="quantity === 0">−</button>
+      <span class="qty">{{ quantity }}</span>
+      <button (click)="add.emit(id)">+</button>
+    </div>
+  </div>
+  

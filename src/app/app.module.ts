@@ -7,7 +7,7 @@ import { Home } from '../components/home/home.component';
 import { Electronics } from '../components/electronics/electronics.component';
 import { Product } from '../components/products/product/product.component';
 import { ProductDetail } from '../components/products/product-detail/product-detail.component';
-import { ItemsComponent } from '../components/products/items/items.component';
+import { ItemsComponent } from '../components/items/items.component';
 
 @NgModule({
   declarations: [

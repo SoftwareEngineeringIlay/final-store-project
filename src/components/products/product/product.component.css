@@ -1,0 +1,33 @@
+.product-box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    background: #fafafa;
+  }
+  
+  .product-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 10px 0;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .controls button {
+    width: 32px;
+    height: 32px;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+  
+  .qty {
+    min-width: 20px;
+    text-align: center;
+  }
+  
