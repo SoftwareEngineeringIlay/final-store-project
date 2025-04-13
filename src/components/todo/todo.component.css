@@ -26,7 +26,9 @@
   margin-bottom: 10px;
   background: #f1f1f1;
   border-radius: 8px;
-  position: relative; /* Make the container position relative to allow absolute positioning of the button */
+  position: relative;
+  display: flex;
+  justify-content: space-between;
 }
 
 .task-header {
@@ -36,8 +38,17 @@
 }
 
 .task-header button {
-  position: absolute; /* Positioning the delete button absolutely within the task item */
-  right: 10px; /* Move it to the right side */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust to perfectly center vertically */
+  position: absolute; /* Make sure the delete button is positioned absolutely */
+  right: 10px; /* Align to the right edge */
+  top: 50%; /* Center it vertically */
+  transform: translateY(-50%); /* Perfect vertical centering */
+}
+
+.delete-all-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.delete-all-button button {
+  margin-left: 10px;
 }
