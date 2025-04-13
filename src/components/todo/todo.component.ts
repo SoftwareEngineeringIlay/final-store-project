@@ -13,6 +13,10 @@ export class TodoComponent {
   constructor(private http: HttpClient) {
     this.fetchTasks();
   }
+  
+  ngOnInit() {
+    this.fetchTasks();
+  }
 
   addTask() {
     if (!this.newTitle.trim() || !this.newContent.trim()) {
