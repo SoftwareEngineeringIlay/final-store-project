@@ -1,37 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-todo',
-  templateUrl: './todo.component.html',
-  styleUrls: ['./todo.component.css']
+  templateUrl: './todo.component.html'
 })
-export class TodoComponent implements OnInit {
-  tasks: string[] = [];
-  newTask: string = '';
+export class TodoComponent {
+  newTitle: string = '';
+  newContent: string = '';
+  tasks: any[] = [];
 
-  ngOnInit() {
-    this.loadTasks();
+  constructor(private http: HttpClient) {
+    this.fetchTasks();
   }
 
-  loadTasks() {
-    fetch('http://localhost:3000/tasks')
-      .then(res => res.json())
-      .then((data: { messages: string[] }) => {
-        this.tasks = data.messages;
-      })
-      .catch(err => console.error('Failed to load tasks:', err));
+  addTask() {
+    if (!this.newTitle.trim() || !this.newContent.trim()) {
+      alert('Please enter title and content.');
+      return;
+    }
+
+    const encodedTitle = encodeURIComponent(this.newTitle);
+    const encodedContent = encodeURIComponent(this.newContent);
+
+    this.http.get(`http://localhost:3000/add/${encodedTitle}/${encodedContent}`).subscribe((res: any) => {
+      this.tasks = res.tasks;
+      this.newTitle = '';
+      this.newContent = '';
+    });
   }
 
-  processTaskInput() {
-    const task = this.newTask.trim();
-    if (!task) return;
-
-    fetch('http://localhost:3000/add/' + encodeURIComponent(task))
-      .then(res => res.json())
-      .then((data: { messages: string[] }) => {
-        this.tasks = data.messages;
-        this.newTask = '';
-      })
-      .catch(err => console.error('Failed to add task:', err));
+  fetchTasks() {
+    this.http.get('http://localhost:3000/tasks').subscribe((res: any) => {
+      this.tasks = res.messages || res.tasks || [];
+    });
   }
 }

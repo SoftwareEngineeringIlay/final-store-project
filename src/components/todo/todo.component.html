@@ -1,8 +1,14 @@
 <p>Add a new task:</p>
 
-<input type="text" [(ngModel)]="newTask" />
-<button (click)="processTaskInput()">Add</button>
+<input [(ngModel)]="newTitle" placeholder="Task title">
+<br>
+<textarea [(ngModel)]="newContent" placeholder="Task content"></textarea>
+<br>
+<button (click)="addTask()">הוסף משימה</button>
 
-<div class="todo-list">
-  <p *ngFor="let task of tasks">{{ task }}</p>
-</div>
+<ul>
+  <li *ngFor="let task of tasks">
+    <strong>{{ task.title }}</strong><br>
+    <span>{{ task.content }}</span>
+  </li>
+</ul>
