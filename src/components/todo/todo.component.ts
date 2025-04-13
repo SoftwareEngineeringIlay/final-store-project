@@ -27,7 +27,7 @@ export class TodoComponent {
     const encodedTitle = encodeURIComponent(this.newTitle);
     const encodedContent = encodeURIComponent(this.newContent);
 
-    this.http.get(`http://localhost:3000/add/${encodedTitle}/${encodedContent}`).subscribe((res: any) => {
+    this.http.get(`/api/add/${encodedTitle}/${encodedContent}`).subscribe((res: any) => {
       this.tasks = res.tasks;
       this.newTitle = '';
       this.newContent = '';
@@ -35,7 +35,7 @@ export class TodoComponent {
   }
 
   fetchTasks() {
-    this.http.get('http://localhost:3000/tasks').subscribe((res: any) => {
+    this.http.get('/api/tasks').subscribe((res: any) => {
       this.tasks = res.messages || res.tasks || [];
     });
   }
