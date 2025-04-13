@@ -1,14 +1,20 @@
-<p>Add a new task:</p>
+<div class="todo-container">
+  <h2>📋 Add a new task</h2>
 
-<input [(ngModel)]="newTitle" placeholder="Task title">
-<br>
-<textarea [(ngModel)]="newContent" placeholder="Task content"></textarea>
-<br>
-<button (click)="addTask()">Add task</button>
+  <div class="form-group">
+    <input [(ngModel)]="newTitle" placeholder="Task title" class="form-control">
+    <textarea [(ngModel)]="newContent" placeholder="Task content" class="form-control"></textarea>
+    <button (click)="addTask()" class="btn btn-success">Add Task</button>
+    <button (click)="clearTasks()" class="btn btn-danger ml-2">Delete All Tasks</button>
+  </div>
 
-<ul>
-  <li *ngFor="let task of tasks">
-    <strong>{{ task.title }}</strong><br>
-    <span>{{ task.content }}</span>
-  </li>
-</ul>
+  <ul class="task-list">
+    <li *ngFor="let task of tasks" class="task-item">
+      <div class="task-header">
+        <strong>{{ task.title }}</strong>
+        <button (click)="deleteTask(task.title)" class="btn btn-sm btn-outline-danger">🗑 Delete</button>
+      </div>
+      <p>{{ task.content }}</p>
+    </li>
+  </ul>
+</div>
