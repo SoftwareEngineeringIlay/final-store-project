@@ -11,6 +11,8 @@ coverage/
 .angular/
 
 # Compiled TypeScript files
+*.js
+!server/index.js
 *.js.map
 *.d.ts
 
