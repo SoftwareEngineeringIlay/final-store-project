@@ -1,37 +1,8 @@
 <p>Add a new task:</p>
-<!-- Input field for entering a new task -->
-<input type="text" id="todo-input">
-<!-- Button to trigger the process of adding a task -->
-<button id="add-btn" onclick="processTaskInput()">Add</button>
-<!-- Div where the list of tasks will be displayed -->
-<div id="todo-list" class="todo-list"></div>
 
-<script>
-  // Function to process the input task when the "Add" button is clicked
-  function processTaskInput() {
-    const task = document.getElementById('todo-input').value.trim(); // Get the task input and remove unnecessary spaces
-    // Make a fetch request to the server to add the task
-    fetch('http://localhost:3000/add/' + task)
-      .then(function (response) {
-        return response.json(); // Convert response to JSON format
-      })
-      .then(function (data) {
-        updateTodoList(data); // Update the task list with the data returned from the server
-        document.getElementById('todo-input').value = ''; // Clear the input field
-      });
-  }
+<input type="text" [(ngModel)]="newTask" />
+<button (click)="processTaskInput()">Add</button>
 
-  // Function to update the to-do list with the new set of tasks
-  function updateTodoList(data) {
-    const todoList = document.getElementById('todo-list'); // Get the div where tasks will be displayed
-    const messageParts = data.messages; // Extract the messages (tasks) from the response
-    todoList.innerHTML = ''; // Clear the current list of tasks
-    // Loop through each task and add it to the list
-    for (let i = 0; i < messageParts.length; i++) {
-      const task = messageParts[i];
-      const par = document.createElement('p'); // Create a new paragraph for each task
-      par.innerHTML = task; // Set the task text inside the paragraph
-      todoList.append(par); // Append the new paragraph to the to-do list
-    }
-  }
-</script>
+<div class="todo-list">
+  <p *ngFor="let task of tasks">{{ task }}</p>
+</div>

@@ -27,7 +27,7 @@ export class Items implements OnInit {
   }
 
   private loadCart() {
-    fetch('http://localhost:3000/api/cart')
+    fetch('api/api/cart')
       .then(r => r.json())
       .then((cart: Record<string,number>) => {
         this.products.forEach(p => p.quantity = cart[p.id] || 0);
@@ -36,7 +36,7 @@ export class Items implements OnInit {
   }
 
   add(id: string) {
-    fetch('http://localhost:3000/api/cart/add', {
+    fetch('api/api/cart/add', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({productId: id})
@@ -50,7 +50,7 @@ export class Items implements OnInit {
   }
 
   remove(id: string) {
-    fetch('http://localhost:3000/api/cart/remove', {
+    fetch('api/api/cart/remove', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({productId: id})
