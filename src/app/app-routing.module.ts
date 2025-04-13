@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { Home } from '../components/home/home.component';
 import { Items } from '../components/items/items.component';
 import { ProductDetail } from '../components/products/product-detail/product-detail.component';
+import { TodoComponent } from '../components/todo/todo.component';
 
 
 const routes: Routes = [
   { path: '', component: Home },
   { path: 'products', component: Items },
+  { path: 'tasks', component: TodoComponent},
   { path: 'product/:id', component: ProductDetail },  // Use a single dynamic route
   { path: '**', redirectTo: '' }  // Fallback to home
 ];

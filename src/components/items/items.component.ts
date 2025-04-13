@@ -9,11 +9,11 @@ interface Item {
 }
 
 @Component({
-  selector: 'app-items',                  // ← matches how we'll use it in HTML
+  selector: 'app-items', 
   templateUrl: './items.component.html',
   styleUrls: ['./items.component.css']
 })
-export class Items implements OnInit {  // ← export class must match the name
+export class Items implements OnInit {
   products: Item[] = [
     { id: 'earbuds',    title: 'Wireless Earbuds',  price: 400, imageUrl: 'assets/images/earbuds.png',   quantity: 0 },
     { id: 'smartwatch', title: 'Smartwatch',        price: 750, imageUrl: 'assets/images/smartwatch.png',quantity: 0 },
