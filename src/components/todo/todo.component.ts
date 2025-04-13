@@ -14,7 +14,7 @@ export class TodoComponent implements OnInit {
   }
 
   loadTasks() {
-    fetch('/api/tasks')
+    fetch('http://localhost:3000/tasks')
       .then(res => res.json())
       .then((data: { messages: string[] }) => {
         this.tasks = data.messages;
@@ -26,7 +26,7 @@ export class TodoComponent implements OnInit {
     const task = this.newTask.trim();
     if (!task) return;
 
-    fetch('/api/add/' + encodeURIComponent(task))
+    fetch('http://localhost:3000/add/' + encodeURIComponent(task))
       .then(res => res.json())
       .then((data: { messages: string[] }) => {
         this.tasks = data.messages;
