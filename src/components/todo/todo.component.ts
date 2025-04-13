@@ -39,4 +39,17 @@ export class TodoComponent {
       this.tasks = res.messages || res.tasks || [];
     });
   }
+
+  deleteTask(title: string) {
+    const encodedTitle = encodeURIComponent(title);
+    this.http.get(`http://localhost:3000/api/delete/${encodedTitle}`).subscribe((res: any) => {
+      this.tasks = res.tasks;
+    });
+  }
+
+  clearTasks() {
+    this.http.get(`http://localhost:3000/api/clear`).subscribe((res: any) => {
+      this.tasks = [];
+    });
+  }
 }
