@@ -15,10 +15,10 @@ interface Item {
 })
 export class Items implements OnInit {  // ← export class must match the name
   products: Item[] = [
-    { id: 'earbuds',    title: 'Wireless Earbuds',  price: 10, imageUrl: 'assets/images/earbuds.png',   quantity: 0 },
-    { id: 'smartwatch', title: 'Smartwatch',        price: 20, imageUrl: 'assets/images/smartwatch.png',quantity: 0 },
-    { id: 'speaker',    title: 'Bluetooth Speaker', price: 30, imageUrl: 'assets/images/speaker.png',    quantity: 0 },
-    { id: 'tv',         title: 'TV',                price: 40, imageUrl: 'assets/images/tv.png',         quantity: 0 }
+    { id: 'earbuds',    title: 'Wireless Earbuds',  price: 400, imageUrl: 'assets/images/earbuds.png',   quantity: 0 },
+    { id: 'smartwatch', title: 'Smartwatch',        price: 750, imageUrl: 'assets/images/smartwatch.png',quantity: 0 },
+    { id: 'speaker',    title: 'Bluetooth Speaker', price: 280, imageUrl: 'assets/images/speaker.png',    quantity: 0 },
+    { id: 'tv',         title: 'TV',                price: 1200, imageUrl: 'assets/images/tv.png',         quantity: 0 }
   ];
   total = 0;
 
