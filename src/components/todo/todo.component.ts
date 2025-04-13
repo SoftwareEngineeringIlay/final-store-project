@@ -6,38 +6,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./todo.component.css']
 })
 export class TodoComponent {
+  tasks: string[] = [];
 
-  processTaskInput() {
-    const inputEl = document.getElementById('todo-input') as HTMLInputElement;
-    const task = inputEl.value.trim();
+  processTaskInput(value: string) {
+    const task = value.trim();
     if (!task) return;
 
-    // call the server to add the task
-    fetch('http://localhost:3000/add/' + encodeURIComponent(task))
+    fetch(`http://localhost:3000/add/${encodeURIComponent(task)}`)
       .then(res => res.json())
-      .then((data: any) => {
-        this.updateTodoList(data.tasks || data.messages || data);
-        inputEl.value = '';
+      .then((data: { messages: string[] }) => {
+        this.tasks = data.messages;
       });
-  }
-
-  updateTodoList(data: any) {
-    const todoList = document.getElementById('todo-list')!;
-    todoList.innerHTML = '';
-    // data could be { tasks: [...] } or { messages: [...] } or just an array
-    const items: any[] = data.tasks || data.messages || data;
-    for (const t of items) {
-      const par = document.createElement('p');
-      // if it's a string:
-      if (typeof t === 'string') {
-        par.textContent = t;
-      } else if (t.title && t.content) {
-        // if it's an object with title/content
-        par.innerHTML = `<strong>${t.title}</strong>: ${t.content}`;
-      } else {
-        par.textContent = JSON.stringify(t);
-      }
-      todoList.appendChild(par);
-    }
   }
 }

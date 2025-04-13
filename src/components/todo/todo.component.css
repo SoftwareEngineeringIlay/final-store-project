@@ -1,4 +1,10 @@
-#todo-list p {
+#todo-list {
+    border: 1px solid #ccc;   /* lighter, less bold */
+    padding: 10px;            /* space inside the box */
+    margin: 10px 0;           /* vertical spacing */
+  }
+  
+  #todo-list p {
     margin: 4px 0;
   }
   
