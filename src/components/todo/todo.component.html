@@ -4,9 +4,7 @@
 <!-- Button to trigger the process of adding a task -->
 <button id="add-btn" onclick="processTaskInput()">Add</button>
 <!-- Div where the list of tasks will be displayed -->
-<div id="todo-list" class="todo-list">
-    <p *ngFor="let t of tasks">{{ t }}</p>
-</div>
+<div id="todo-list" class="todo-list"></div>
 
 <script>
   // Function to process the input task when the "Add" button is clicked
