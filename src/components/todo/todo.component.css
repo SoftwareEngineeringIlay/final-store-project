@@ -4,7 +4,7 @@
   padding: 16px;
   background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .todo-list {
@@ -26,4 +26,18 @@
   margin-bottom: 10px;
   background: #f1f1f1;
   border-radius: 8px;
+  position: relative; /* Make the container position relative to allow absolute positioning of the button */
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.task-header button {
+  position: absolute; /* Positioning the delete button absolutely within the task item */
+  right: 10px; /* Move it to the right side */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust to perfectly center vertically */
 }
