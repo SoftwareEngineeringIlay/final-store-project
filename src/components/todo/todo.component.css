@@ -38,10 +38,10 @@
 }
 
 .task-header button {
-  position: absolute; /* Make sure the delete button is positioned absolutely */
-  right: 10px; /* Align to the right edge */
-  top: 50%; /* Center it vertically */
-  transform: translateY(-50%); /* Perfect vertical centering */
+  position: absolute; 
+  right: 10px; 
+  top: 50%; 
+  transform: translateY(-50%); 
 }
 
 .delete-all-button {
