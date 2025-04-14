@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 interface Item {
@@ -9,7 +10,7 @@ interface Item {
 }
 
 @Component({
-  selector: 'app-items', 
+  selector: 'app-items',
   templateUrl: './items.component.html',
   styleUrls: ['./items.component.css']
 })
@@ -22,48 +23,41 @@ export class Items implements OnInit {
   ];
   total = 0;
 
+  constructor(private http: HttpClient) {}
+
   ngOnInit(): void {
     this.loadCart();
   }
 
   private loadCart() {
-    fetch('http://localhost:3000/api/cart')
-      .then(r => r.json())
-      .then((cart: Record<string,number>) => {
+    this.http.get<Record<string,number>>('/api/cart')
+      .subscribe(cart => {
         this.products.forEach(p => p.quantity = cart[p.id] || 0);
         this.calculateTotal();
       });
   }
 
   add(id: string) {
-    fetch('http://localhost:3000/api/cart/add', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({productId: id})
-    })
-    .then(r => r.json())
-    .then(data => {
-      const p = this.products.find(x=>x.id===id)!;
-      p.quantity = data.quantity;
-      this.calculateTotal();
-    });
+    this.http.post<{ quantity: number }>('/api/cart/add', { productId: id })
+      .subscribe(data => {
+        this.updateQuantity(id, data.quantity);
+      });
   }
 
   remove(id: string) {
-    fetch('http://localhost:3000/api/cart/remove', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({productId: id})
-    })
-    .then(r => r.json())
-    .then(data => {
-      const p = this.products.find(x=>x.id===id)!;
-      p.quantity = data.quantity;
-      this.calculateTotal();
-    });
+    this.http.post<{ quantity: number }>('/api/cart/remove', { productId: id })
+      .subscribe(data => {
+        this.updateQuantity(id, data.quantity);
+      });
+  }
+
+  private updateQuantity(id: string, qty: number) {
+    const p = this.products.find(x => x.id === id)!;
+    p.quantity = qty;
+    this.calculateTotal();
   }
 
   private calculateTotal() {
-    this.total = this.products.reduce((sum,p) => sum + p.price*p.quantity, 0);
+    this.total = this.products.reduce((sum, p) => sum + p.price * p.quantity, 0);
   }
 }

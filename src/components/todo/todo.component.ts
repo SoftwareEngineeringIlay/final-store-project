@@ -1,22 +1,31 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+interface Task { 
+  _id?: string;
+  title: string;
+  content: string;
+}
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.css']
 })
-export class TodoComponent {
-  newTitle: string = '';
-  newContent: string = '';
-  tasks: any[] = [];
+export class TodoComponent implements OnInit {
+  newTitle   = '';
+  newContent = '';
+  tasks: Task[] = [];
 
-  constructor(private http: HttpClient) {
-    this.fetchTasks();
-  }
-  
+  constructor(private http: HttpClient) {}
+
   ngOnInit() {
     this.fetchTasks();
+  }
+
+  fetchTasks() {
+    this.http.get<{ tasks: Task[] }>('/api/tasks')
+      .subscribe(res => this.tasks = res.tasks);
   }
 
   addTask() {
@@ -25,32 +34,23 @@ export class TodoComponent {
       return;
     }
 
-    const encodedTitle = encodeURIComponent(this.newTitle);
-    const encodedContent = encodeURIComponent(this.newContent);
-
-    this.http.get(`/api/add/${encodedTitle}/${encodedContent}`).subscribe((res: any) => {
-      this.tasks = res.tasks;
+    this.http.post<Task>('/api/tasks', {
+      title:   this.newTitle.trim(),
+      content: this.newContent.trim()
+    }).subscribe(_ => {
       this.newTitle = '';
       this.newContent = '';
-    });
-  }
-
-  fetchTasks() {
-    this.http.get('/api/tasks').subscribe((res: any) => {
-      this.tasks = res.messages || res.tasks || [];
+      this.fetchTasks();
     });
   }
 
   deleteTask(title: string) {
-    const encodedTitle = encodeURIComponent(title);
-    this.http.get(`http://localhost:3000/api/delete/${encodedTitle}`).subscribe((res: any) => {
-      this.tasks = res.tasks;
-    });
+    this.http.delete<{ message: string }>(`/api/tasks/${encodeURIComponent(title)}`)
+      .subscribe(_ => this.fetchTasks());
   }
 
   clearTasks() {
-    this.http.get(`http://localhost:3000/api/clear`).subscribe((res: any) => {
-      this.tasks = [];
-    });
+    this.http.delete<{ message: string }>('/api/tasks')
+      .subscribe(_ => this.tasks = []);
   }
 }

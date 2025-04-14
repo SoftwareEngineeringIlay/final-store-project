@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -7,33 +6,66 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ─── Part A: In‑Memory Cart ─────────────────────────────────────────
-let cart = {};
+// ─── Connect to MongoDB "store" database ─────────────────────────────────
+const dbName = 'store';
+const mongoURI = `mongodb://localhost:27017/${dbName}`;
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log(`✅ Connected to MongoDB database: ${dbName}`))
+.catch(err => console.error('❌ MongoDB connection error:', err));
+
+// ─── Define Schemas & Models ────────────────────────────────────────────
+const TaskSchema = new mongoose.Schema({
+  title:   { type: String, required: true },
+  content: { type: String, required: true }
+});
+const Task = mongoose.model('Task', TaskSchema);
+
+const CartItemSchema = new mongoose.Schema({
+  productId: { type: String, required: true, unique: true },
+  quantity:  { type: Number, default: 0 }
+});
+const CartItem = mongoose.model('CartItem', CartItemSchema);
+
+// ─── Part A: Cart Persistence in MongoDB ─────────────────────────────────
 
 // Get the entire cart
-app.get('/api/cart', (req, res) => {
+app.get('/api/cart', async (req, res) => {
+  const items = await CartItem.find();
+  // transform to key:quantity
+  const cart = items.reduce((acc, i) => {
+    acc[i.productId] = i.quantity;
+    return acc;
+  }, {});
   res.json(cart);
 });
 
 // Add one item to the cart
-app.post('/api/cart/add', (req, res) => {
+app.post('/api/cart/add', async (req, res) => {
   const { productId } = req.body;
-  cart[productId] = (cart[productId] || 0) + 1;
-  console.log(`/add/${productId} → ${productId} count: ${cart[productId]}`);
-  res.json({ quantity: cart[productId] });
+  const item = await CartItem.findOneAndUpdate(
+    { productId },
+    { $inc: { quantity: 1 } },
+    { upsert: true, new: true }
+  );
+  res.json({ quantity: item.quantity });
 });
 
 // Remove one item from the cart
-app.post('/api/cart/remove', (req, res) => {
+app.post('/api/cart/remove', async (req, res) => {
   const { productId } = req.body;
-  cart[productId] = Math.max((cart[productId] || 0) - 1, 0);
-  console.log(`/remove/${productId} → ${productId} count: ${cart[productId]}`);
-  res.json({ quantity: cart[productId] });
+  const item = await CartItem.findOne({ productId });
+  if (item) {
+    item.quantity = Math.max(item.quantity - 1, 0);
+    await item.save();
+    return res.json({ quantity: item.quantity });
+  }
+  res.json({ quantity: 0 });
 });
 
-
-// ─── Part B & C: Task Management (MongoDB) ──────────────────────────
-let tasks = [];
+// ─── Part B: Task Management ─────────────────────────────────────────────
 
 // Return current list of tasks
 app.get('/api/tasks', async (req, res) => {
@@ -41,66 +73,38 @@ app.get('/api/tasks', async (req, res) => {
   res.json({ tasks });
 });
 
-
-app.get('/api/add/:task', (req, res) => {
-  const t = req.params.task;
-  tasks.push(t);
-  console.log(tasks);
-  res.json({ tasks });
-});
-
-// Connect to MongoDB “test” database
-mongoose.connect('mongodb://localhost:27017/test', {
-  useNewUrlParser:    true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Mongo connection error:', err));
-
-// Define Task schema & model
-const TaskSchema = new mongoose.Schema({
-  title:   String,
-  content: String
-});
-const Task = mongoose.model('Task', TaskSchema);
-
 // Add a task
-app.get('/api/add/:title/:content', async (req, res) => {
-  const { title, content } = req.params;
-  await Task.create({ title, content });
-  const tasks = await Task.find();
-  console.log('Tasks after add:', tasks);
-  res.json({ tasks });
+app.post('/api/tasks', async (req, res) => {
+  const { title, content } = req.body;
+  const task = await Task.create({ title, content });
+  res.status(201).json(task);
 });
 
 // Clear all tasks
-app.get('/api/clear', async (req, res) => {
+app.delete('/api/tasks', async (req, res) => {
   await Task.deleteMany({});
-  console.log('all tasks cleared');
-  res.json({ message: 'all tasks cleared', tasks: [] });
+  res.json({ message: 'All tasks cleared' });
 });
 
 // Delete a single task by title
-app.get('/api/delete/:title', async (req, res) => {
-  await Task.deleteOne({ title: req.params.title });
-  const tasks = await Task.find();
-  console.log('Tasks after delete:', tasks);
-  res.json({ tasks });
+app.delete('/api/tasks/:title', async (req, res) => {
+  const { title } = req.params;
+  await Task.deleteOne({ title });
+  res.json({ message: `Task '${title}' deleted` });
 });
 
-// Update a task
-app.get('/api/update/:oldTitle/:newTitle/:newContent', async (req, res) => {
-  const { oldTitle, newTitle, newContent } = req.params;
-  await Task.updateOne(
+// Update a task by title
+app.put('/api/tasks/:oldTitle', async (req, res) => {
+  const { oldTitle } = req.params;
+  const { newTitle, newContent } = req.body;
+  const result = await Task.findOneAndUpdate(
     { title: oldTitle },
-    { title: newTitle, content: newContent }
+    { title: newTitle, content: newContent },
+    { new: true }
   );
-  const tasks = await Task.find();
-  console.log('Tasks after update:', tasks);
-  res.json({ tasks });
+  res.json(result);
 });
 
-
-// ─── Start the server ────────────────────────────────────────────────
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
+// ─── Start the server ───────────────────────────────────────────────────
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server listening on http://localhost:${PORT}`));
