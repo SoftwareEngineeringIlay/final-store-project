@@ -1,27 +1,75 @@
-# AngularProj
+# Final Store Project
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.11.
+This project is a full-stack web application using Angular for the frontend, Express.js for the backend, and MongoDB for data storage. It includes features like a shopping cart and a simple task management system.
 
-## Development server
+## Technologies Used
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Angular 13 with Bootstrap for the frontend
+- Node.js with Express.js for the backend
+- MongoDB for the database
+- RESTful APIs for communication between frontend and backend
+- Angular CLI for building and running the frontend
+- The `concurrently` package to run both servers at the same time
 
-## Code scaffolding
+## Project Structure Overview
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The project is organized as follows:
 
-## Build
+- `src/`: Contains the Angular application (components, routing, styling, etc.)
+- `server/`: Contains the Express backend with all the API logic
+- `proxy.conf.json`: Used to proxy Angular requests to the backend during development
+- `angular.json`: Angular project configuration
+- `package.json`: Defines project scripts and dependencies
+- `tsconfig.json`: TypeScript configuration
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Getting Started
 
-## Running unit tests
+### Step 1: Install dependencies
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run the following command in the root of the project:
 
-## Running end-to-end tests
+```
+npm install
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Step 2: Start MongoDB
 
-## Further help
+Make sure you have MongoDB installed and running locally. By default, the backend connects to:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```
+mongodb://localhost:27017/store
+```
+
+You can start MongoDB using the `mongod` command or with a graphical tool like MongoDB Compass.
+
+### Step 3: Run the Application
+
+To start both the Angular frontend and the Express backend at the same time, simply run:
+
+```
+npm start
+```
+
+- The Angular app will be available at: http://localhost:4200
+- The backend API will run on: http://localhost:3000
+
+## Features
+
+### Shopping Cart
+
+- Users can add or remove items.
+- Item quantities are tracked.
+- Cart data is stored in the MongoDB database.
+
+### Task Manager
+
+- Users can add, edit, delete, and clear tasks.
+- All tasks are stored in the database.
+
+## Additional Notes
+
+- All backend API routes start with `/api`
+- The Angular app uses a proxy configuration (`proxy.conf.json`) to handle API calls locally.
+- Development and production configurations are already set up in `angular.json`.
+
+This setup allows for a seamless development experience with synchronized frontend and backend environments.
