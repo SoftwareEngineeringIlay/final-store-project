@@ -13,8 +13,8 @@ mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log(`✅ Connected to MongoDB database: ${dbName}`))
-.catch(err => console.error('❌ MongoDB connection error:', err));
+.then(() => console.log("Connected to MongoDB database: ${dbName}"))
+.catch(err => console.error('MongoDB connection error:', err));
 
 // ─── Define Schemas & Models ────────────────────────────────────────────
 const TaskSchema = new mongoose.Schema({
@@ -90,7 +90,7 @@ app.delete('/api/tasks', async (req, res) => {
 app.delete('/api/tasks/:title', async (req, res) => {
   const { title } = req.params;
   await Task.deleteOne({ title });
-  res.json({ message: `Task '${title}' deleted` });
+  res.json({ message: "Task '${title}' deleted" });
 });
 
 // Update a task by title
@@ -107,4 +107,4 @@ app.put('/api/tasks/:oldTitle', async (req, res) => {
 
 // ─── Start the server ───────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server listening on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log("Server listening on http://localhost:${PORT}"));
