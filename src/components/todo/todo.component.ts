@@ -61,8 +61,8 @@ export class TodoComponent implements OnInit {
   // ── EDIT MODE HANDLERS ────────────────────────
 
   startEdit(task: Task) {
-    this.editingOldTitle = task.title;       // mark which one we’re editing
-    this.editingTitle    = task.title;       // prefill inputs
+    this.editingOldTitle = task.title;       
+    this.editingTitle    = task.title;       
     this.editingContent  = task.content;
   }
 
@@ -77,7 +77,7 @@ export class TodoComponent implements OnInit {
       alert('Title and content cannot be empty.');
       return;
     }
-    // send PUT to your existing update route
+    
     this.http.put<Task>(
       `/api/tasks/${encodeURIComponent(this.editingOldTitle!)}`,
       {
