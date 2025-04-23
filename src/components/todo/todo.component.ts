@@ -17,6 +17,11 @@ export class TodoComponent implements OnInit {
   newContent = '';
   tasks: Task[] = [];
 
+  // ── EDIT MODE STATE ──────────────────────────
+  editingOldTitle: string | null = null;
+  editingTitle: string = '';
+  editingContent: string = '';
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -33,7 +38,6 @@ export class TodoComponent implements OnInit {
       alert('Please enter title and content.');
       return;
     }
-
     this.http.post<Task>('/api/tasks', {
       title:   this.newTitle.trim(),
       content: this.newContent.trim()
@@ -52,5 +56,37 @@ export class TodoComponent implements OnInit {
   clearTasks() {
     this.http.delete<{ message: string }>('/api/tasks')
       .subscribe(_ => this.tasks = []);
+  }
+
+  // ── EDIT MODE HANDLERS ────────────────────────
+
+  startEdit(task: Task) {
+    this.editingOldTitle = task.title;       // mark which one we’re editing
+    this.editingTitle    = task.title;       // prefill inputs
+    this.editingContent  = task.content;
+  }
+
+  cancelEdit() {
+    this.editingOldTitle = null;
+    this.editingTitle = '';
+    this.editingContent = '';
+  }
+
+  saveEdit() {
+    if (!this.editingTitle.trim() || !this.editingContent.trim()) {
+      alert('Title and content cannot be empty.');
+      return;
+    }
+    // send PUT to your existing update route
+    this.http.put<Task>(
+      `/api/tasks/${encodeURIComponent(this.editingOldTitle!)}`,
+      {
+        newTitle:   this.editingTitle.trim(),
+        newContent: this.editingContent.trim()
+      }
+    ).subscribe(_ => {
+      this.cancelEdit();
+      this.fetchTasks();
+    });
   }
 }

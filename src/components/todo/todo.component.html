@@ -20,16 +20,58 @@
 
   <ul class="task-list">
     <li *ngFor="let task of tasks" class="task-item">
-      <div class="task-content">
-        <strong>{{ task.title }}</strong>
-        <p>{{ task.content }}</p>
-      </div>
-      <button
-        (click)="deleteTask(task.title)"
-        class="btn btn-sm btn-outline-danger ml-auto"
-      >
-        🗑 Delete
-      </button>
+      <!-- VIEW MODE -->
+      <ng-container *ngIf="editingOldTitle !== task.title; else editMode">
+        <div class="task-content">
+          <strong>{{ task.title }}</strong>
+          <p>{{ task.content }}</p>
+        </div>
+        <div class="btn-group ml-auto">
+          <!-- EDIT BUTTON -->
+          <button
+            (click)="startEdit(task)"
+            class="btn btn-sm btn-outline-primary mr-2"
+          >
+            ✏️ Edit
+          </button>
+          <!-- DELETE BUTTON (unchanged) -->
+          <button
+            (click)="deleteTask(task.title)"
+            class="btn btn-sm btn-outline-danger"
+          >
+            🗑 Delete
+          </button>
+        </div>
+      </ng-container>
+
+      <!-- EDIT MODE -->
+      <ng-template #editMode>
+        <div class="form-group flex-grow">
+          <input
+            [(ngModel)]="editingTitle"
+            class="form-control mb-1"
+          >
+          <textarea
+            [(ngModel)]="editingContent"
+            class="form-control mb-1"
+          ></textarea>
+        </div>
+        <div class="btn-group ml-auto">
+          <!-- SAVE + CANCEL -->
+          <button
+            (click)="saveEdit()"
+            class="btn btn-sm btn-success mr-2"
+          >
+            ✔️ Save
+          </button>
+          <button
+            (click)="cancelEdit()"
+            class="btn btn-sm btn-secondary"
+          >
+            ✖️ Cancel
+          </button>
+        </div>
+      </ng-template>
     </li>
   </ul>
 </div>
